@@ -2,3 +2,5 @@ vcpkg/
 build/
 build_and_run.sh
 CMakeLists.txt
+
+.vscode
