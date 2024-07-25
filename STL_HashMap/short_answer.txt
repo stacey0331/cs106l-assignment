@@ -1,2 +1,15 @@
 Assignment 3: STL HashMap (short answer questions)
-Names:
+Names: Staecy Lee
+
+1. at() vs. []
+[] will not throw exception if a key is not found, instead it will create a K/M pair with that key and default value. 
+
+2. HashMap::find vs. std::find
+The std::find uses loop to loop throuugh everything, while the HashMap uses hash funciton to identify the bucket first. So it is preferrable to call the HashMap::find. 
+
+3. Why is the HashMap class RAII-compliant?
+RAII-compliant means all resources should be acquired in the constructor and freed in the destructor.
+The HashMap class follows this rule.
+
+4. Briefly explain the implementation of operator++. 
+The iterator class keeps track of the node the iterator is currentlly pointing to as a private variable. The next node is returned. If the next node is null, find node in then next bucket.
