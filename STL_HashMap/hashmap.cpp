@@ -76,7 +76,7 @@ typename HashMap<K, M, H>::iterator HashMap<K, M, H>::find(const K& key) {
 
 template <typename K, typename M, typename H>
 typename HashMap<K, M, H>::const_iterator HashMap<K, M, H>::find(const K& key) const {
-    return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->find());
+    return static_cast<const_iterator>(const_cast<HashMap<K, M, H>*>(this)->find(key));
 }
 
 template <typename K, typename M, typename H>
@@ -173,7 +173,7 @@ bool HashMap<K, M, H>::erase(const K& key) {
 }
 
 template <typename K, typename M, typename H>
-typename HashMap<K, M, H>::iterator HashMap<K, M, H>::erase(typename HashMap<K, M, H>::const_iterator pos) const {
+typename HashMap<K, M, H>::iterator HashMap<K, M, H>::erase(typename HashMap<K, M, H>::const_iterator pos) {
     erase(pos++->first);
     return make_iterator(pos._node); // unfortunately we need a regular iterator, not a const_iterator
 }
@@ -263,4 +263,51 @@ std::ostream& operator<<(std::ostream& os, const HashMap<K, M, H>& rhs) {
 
 /* Begin Milestone 2: Special Member Functions */
 
+// copy constructor
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(const HashMap& other) :
+    HashMap(other.bucket_count(), other._hash_function) {
+        for(auto & [key, val]: other) {
+            insert({key, val});
+        }
+    }
+
+// copy assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator=(const HashMap& other) {
+    if (this != &other) {
+        clear();
+        for(auto & [key, val]: other) {
+            insert({key, val});
+        }
+        _hash_function = other._hash_function;
+    }
+    return *this;
+}
+
+// move constructor
+template <typename K, typename M, typename H>
+HashMap<K, M, H>::HashMap(HashMap&& other) :
+    _size{std::move(other._size)},
+    _hash_function{std::move(other._hash_function)},
+    _buckets_array{other.bucket_count(), nullptr} {
+    for (size_t i = 0; i < other.bucket_count(); i++) {
+        _buckets_array[i] = std::move(other._buckets_array[i]);
+    }
+}
+
+// move assignment
+template <typename K, typename M, typename H>
+HashMap<K, M, H>& HashMap<K, M, H>::operator=(HashMap&& other) {
+    if (this != &other) {
+        clear();
+        _size = std::move(other._size);
+        _hash_function = std::move(other._hash_function);
+        _buckets_array.resize(other.bucket_count());
+        for (size_t i = 0; i < other.bucket_count(); i++) {
+            _buckets_array[i] = std::move(other._buckets_array[i]);
+        }
+    }
+    return *this;
+}
 /* end student code */

@@ -864,9 +864,11 @@ return vec7;     // copy constructor: creates a copy of local variable to be ret
 
 ### Copy Constructor Example / Deep Copy Vector
 ```c++
-StirngVector::StringVector(const StringVector& other): logicalSize(other.logicalSize), allocatedSize(other.allocatedSize):
+StirngVector::StringVector(const StringVector& other): logicalSize(other.logicalSize), allocatedSize(other.allocatedSize) {
     elems = new std::string[allocatedSize];
     std::copy(other.begin(), other.end(), begin());
+}
+
 ```
 
 ### Implement Copy Assignment Example

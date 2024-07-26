@@ -129,6 +129,10 @@ public:
     */
     ~HashMap();
 
+    HashMap(const HashMap& other);
+    HashMap<K, M, H>& operator=(const HashMap& other);
+    HashMap(HashMap&& other);
+    HashMap<K, M, H>& operator=(HashMap&& other);
     /*
     * Returns the number of (K, M) pairs in the map.
     *
@@ -323,7 +327,7 @@ public:
     * Notes: a call to erase should maintain the order of existing iterators,
     * other than iterators to the erased K/M element.
     */
-    iterator erase(const_iterator pos) const;
+    iterator erase(const_iterator pos);
 
     /*
     * Resizes the array of buckets, and rehashes all elements. new_buckets could
